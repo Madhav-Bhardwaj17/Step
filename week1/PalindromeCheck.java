@@ -5,22 +5,23 @@ public class PalindromeCheck {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter a string: ");
+        System.out.println("Enter a string: ");
         String str = sc.nextLine();
+        String new_str="";
 
-        String original = str;
-        String reversed = "";
-
-        for (int i = str.length() - 1; i >= 0; i--) {
-            reversed += str.charAt(i);
+        for(int i = str.length()-1 ; i>=0;i--){
+            new_str = new_str + str.charAt(i);
+           
+            
         }
 
-        if (original.equalsIgnoreCase(reversed)) {
-            System.out.println("Palindrome");
-        } else {
-            System.out.println("Not a Palindrome");
+        if(str.equals(new_str)){
+            System.out.println("The given string is the plindrome");
         }
-
+        else{
+            System.out.println("The given string is not a plaindrome ");
+        }
+        
         sc.close();
     }
 }
