@@ -1,45 +1,35 @@
 import java.util.Scanner;
 
-public class PalindromeCheck { // Added the class declaration
+public class PalindromeCheck {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter a string to check: ");
+        System.out.print("Enter a phrase (e.g., 'A man, a plan, a canal: Panama'): ");
         String userInput = scanner.nextLine();
 
-        // Optional: Clean the string (remove spaces/lowercase) for a better UX
-        String cleanedInput = userInput.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        // UC10 Logic: Normalization
+        // 1. Convert to lowercase
+        // 2. Replace all non-alphanumeric characters with an empty string
+        String cleanedInput = userInput.toLowerCase().replaceAll("[^a-z0-9]", "");
 
         if (cleanedInput.isEmpty()) {
-            System.out.println("Please enter a valid alphanumeric string.");
+            System.out.println("No valid characters found to check.");
         } else {
-            // Calling the recursive function
-            boolean isPalindrome = checkPalindrome(cleanedInput, 0, cleanedInput.length() - 1);
+            boolean result = isPalindrome(cleanedInput, 0, cleanedInput.length() - 1);
             
-            System.out.println("\n--- Result ---");
-            System.out.println("Original: " + userInput);
-            System.out.println("Is Palindrome: " + isPalindrome);
+            System.out.println("\n--- Normalization Details ---");
+            System.out.println("Cleaned version: " + cleanedInput);
+            System.out.println("Is Palindrome: " + result);
         }
 
-        scanner.close(); // Fixed from 'sc.close()' to match your variable name
+        scanner.close();
     }
 
-    /**
-     * UC9: Recursive Palindrome Checker logic
-     */
-    public static boolean checkPalindrome(String str, int start, int end) {
-        // Base Case: If pointers meet or cross, we've checked everything
-        if (start >= end) {
-            return true;
-        }
-
-        // Comparison Logic: If characters don't match, it's not a palindrome
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        // Recursive Call: Shrink the problem by moving indices inward
-        return checkPalindrome(str, start + 1, end - 1);
+    // Recursive logic from UC9
+    public static boolean isPalindrome(String str, int low, int high) {
+        if (low >= high) return true;
+        if (str.charAt(low) != str.charAt(high)) return false;
+        return isPalindrome(str, low + 1, high - 1);
     }
 }
