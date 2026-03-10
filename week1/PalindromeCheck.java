@@ -1,93 +1,45 @@
 import java.util.Scanner;
 
-class Node {
-    char data;
-    Node next;
-
-    Node(char data) {
-        this.data = data;
-        this.next = null;
-    }
-}
-
-public class PalindromeCheck {
-
-    // Reverse Linked List
-    public static Node reverse(Node head) {
-        Node prev = null;
-        Node current = head;
-        Node next = null;
-
-        while (current != null) {
-            next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-
-        return prev;
-    }
-
-    // Check Palindrome
-    public static boolean isPalindrome(Node head) {
-
-        if (head == null || head.next == null)
-            return true;
-
-        Node slow = head;
-        Node fast = head;
-
-        // Find middle using fast & slow pointers
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        // Reverse second half
-        Node secondHalf = reverse(slow);
-        Node firstHalf = head;
-
-        // Compare both halves
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
-        }
-
-        return true;
-    }
+public class PalindromeCheck { // Added the class declaration
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter a string to check: ");
+        String userInput = scanner.nextLine();
 
-        System.out.print("Enter a string: ");
-        String input = sc.nextLine();
+        // Optional: Clean the string (remove spaces/lowercase) for a better UX
+        String cleanedInput = userInput.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        Node head = null;
-        Node tail = null;
-
-        // Convert string to linked list
-        for (char ch : input.toCharArray()) {
-            Node newNode = new Node(ch);
-
-            if (head == null) {
-                head = newNode;
-                tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-
-        if (isPalindrome(head)) {
-            System.out.println("The string is a Palindrome.");
+        if (cleanedInput.isEmpty()) {
+            System.out.println("Please enter a valid alphanumeric string.");
         } else {
-            System.out.println("The string is NOT a Palindrome.");
+            // Calling the recursive function
+            boolean isPalindrome = checkPalindrome(cleanedInput, 0, cleanedInput.length() - 1);
+            
+            System.out.println("\n--- Result ---");
+            System.out.println("Original: " + userInput);
+            System.out.println("Is Palindrome: " + isPalindrome);
         }
 
-        sc.close();
+        scanner.close(); // Fixed from 'sc.close()' to match your variable name
+    }
+
+    /**
+     * UC9: Recursive Palindrome Checker logic
+     */
+    public static boolean checkPalindrome(String str, int start, int end) {
+        // Base Case: If pointers meet or cross, we've checked everything
+        if (start >= end) {
+            return true;
+        }
+
+        // Comparison Logic: If characters don't match, it's not a palindrome
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
+        }
+
+        // Recursive Call: Shrink the problem by moving indices inward
+        return checkPalindrome(str, start + 1, end - 1);
     }
 }
